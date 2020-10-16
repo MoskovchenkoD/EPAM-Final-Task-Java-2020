@@ -1,0 +1,17 @@
+<Context>
+
+    <Resource name="jdbc/epam"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxTotal="20" maxIdle="30" maxWaitMillis="10000"
+              username="root" password="12345678"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              defaultAutoCommit="false"
+              defaultTransactionIsolation="READ_COMMITTED"
+              connectionProperties="useUnicode=yes;characterEncoding=utf8;useJDBCCompliantTimezoneShift=true;useLegacyDatetimeCode=false;serverTimezone=UTC"
+              url="jdbc:mysql://localhost:3306/epam_task"/>
+
+    <!-- maxActive="100" maxIdle="30" maxWait="10000"-->
+    <!-- connectionProperties="useUnicode=yes;characterEncoding=utf8;"  -->
+
+</Context>
