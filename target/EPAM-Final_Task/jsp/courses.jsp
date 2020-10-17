@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="loc" uri="/WEB-INF/taglib/i18n.tld"%>
+<%@ page import="ua.nure.moskovchenko.db.Role" %>
 
 <!doctype html>
 <html>
@@ -18,70 +19,69 @@
     <!-- Page Content -->
     <div id="page-content-wrapper">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom"> <!--   -->
+        <c:choose>
+            <c:when test="${sessionScope.user != null && sessionScope.user.role == Role.ADMIN}">
+                <jsp:include page="navbarAdmin.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="navbar.jsp"/>
+            </c:otherwise>
+        </c:choose>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto mt-2 mt-lg-0"> <!--   -->
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <loc:i18n value="navbar.switchLanguage"/>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <form action="/language" method="post" id="en">
-                                <input hidden name="lang" value="en">
-                                <input hidden id="loc" name="location"> <%-- for language-help.js --%>
-                            </form>
-                            <form action="/language" method="post" id="ru">
-                                <input hidden name="lang" value="ru">
-                                <input hidden id="loc2" name="location"> <%-- for language-help.js --%>
-                            </form>
+<%--        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom"> <!--   -->--%>
 
-                            <button class="dropdown-item" form="en" type="submit">
-                                <loc:i18n value="navbar.language.en"/>
-                            </button>
+<%--            <div class="collapse navbar-collapse" id="navbarSupportedContent">--%>
+<%--                <ul class="navbar-nav ml-auto mt-2 mt-lg-0"> <!--   -->--%>
+<%--                    <li class="nav-item dropdown active">--%>
+<%--                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--%>
+<%--                            <loc:i18n value="navbar.switchLanguage"/>--%>
+<%--                        </a>--%>
+<%--                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">--%>
+<%--                            <form action="/language" method="post" id="en">--%>
+<%--                                <input hidden name="lang" value="en">--%>
+<%--                                <input hidden id="loc" name="location"> &lt;%&ndash; for language-help.js &ndash;%&gt;--%>
+<%--                            </form>--%>
+<%--                            <form action="/language" method="post" id="ru">--%>
+<%--                                <input hidden name="lang" value="ru">--%>
+<%--                                <input hidden id="loc2" name="location"> &lt;%&ndash; for language-help.js &ndash;%&gt;--%>
+<%--                            </form>--%>
 
-                            <button class="dropdown-item" form="ru" type="submit">
-                                <loc:i18n value="navbar.language.ru"/>
-                            </button>
+<%--                            <button class="dropdown-item" form="en" type="submit">--%>
+<%--                                <loc:i18n value="navbar.language.en"/>--%>
+<%--                            </button>--%>
 
-                        </div>
-                    </li>
+<%--                            <button class="dropdown-item" form="ru" type="submit">--%>
+<%--                                <loc:i18n value="navbar.language.ru"/>--%>
+<%--                            </button>--%>
 
-                    <li class="nav-item active">
-                        <c:url var="viewCourse" value="courses"/>
-                        <a class="nav-link" href="${viewCourse}"><loc:i18n value="navbar.viewCourses"/></a>
-                    </li>
+<%--                        </div>--%>
+<%--                    </li>--%>
 
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle btn" href="" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <loc:i18n value="navbar.welcome"/>
-                            <c:out value="${user.login}"/>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown2">
-                            <c:url var="viewCabinet" value="cabinet"/>
-                            <a class="dropdown-item" href="${viewCabinet}"><loc:i18n value="navbar.goToCabinet"/></a>
-                                <div class="dropdown-divider"></div>
-                            <c:url var="logout" value="logout"/>
-                            <a class="dropdown-item" href="${logout}"><loc:i18n value="navbar.logout"/></a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+<%--                    <li class="nav-item active">--%>
+<%--                        <c:url var="viewCourse" value="courses"/>--%>
+<%--                        <a class="nav-link" href="${viewCourse}"><loc:i18n value="navbar.viewCourses"/></a>--%>
+<%--                    </li>--%>
+
+<%--                    <li class="nav-item dropdown active">--%>
+<%--                        <a class="nav-link dropdown-toggle btn" href="" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--%>
+<%--                            <loc:i18n value="navbar.welcome"/>--%>
+<%--                            <c:out value="${user.login}"/>--%>
+<%--                        </a>--%>
+<%--                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown2">--%>
+<%--                            <c:url var="viewCabinet" value="cabinet"/>--%>
+<%--                            <a class="dropdown-item" href="${viewCabinet}"><loc:i18n value="navbar.goToCabinet"/></a>--%>
+<%--                                <div class="dropdown-divider"></div>--%>
+<%--                            <c:url var="logout" value="logout"/>--%>
+<%--                            <a class="dropdown-item" href="${logout}"><loc:i18n value="navbar.logout"/></a>--%>
+<%--                        </div>--%>
+<%--                    </li>--%>
+<%--                </ul>--%>
+<%--            </div>--%>
+<%--        </nav>--%>
 
         <div class="container-fluid"> <%-- container --%>
 
-            <h2>Courses Page</h2>
-<%--            <br>--%>
-
-<%--            <h4>User in session</h4>--%>
-<%--            <label>Login:</label>--%>
-<%--            <c:out value="${user.login}"/><br>--%>
-<%--            <label>Role:</label>--%>
-<%--            <c:out value="${user.role}"/>--%>
-<%--            <br><br>--%>
-
-            <h4>Available courses:</h4> <!-- TODO: i18n -->
+            <h4><loc:i18n value="course.availableCourses"/>: </h4>
             <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead> <!-- table-sm  -->
                 <tr>

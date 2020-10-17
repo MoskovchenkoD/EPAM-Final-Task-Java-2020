@@ -8,7 +8,8 @@
   <display-name>God bless me</display-name>
 
   <welcome-file-list>
-    <welcome-file>/jsp/login.jsp</welcome-file>
+    <welcome-file>courses</welcome-file>
+    <!--     <welcome-file>/jsp/login.jsp</welcome-file> -->
   </welcome-file-list>
 
 <!--============================================================
@@ -97,6 +98,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>ErrorPageServlet</servlet-name>
+    <servlet-class>ua.nure.moskovchenko.web.servlet.ErrorPageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ErrorPageServlet</servlet-name>
+    <url-pattern>/errorPage</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>OperateCourseServlet</servlet-name>
     <servlet-class>ua.nure.moskovchenko.web.servlet.OperateCourseServlet</servlet-class>
   </servlet>
@@ -176,24 +186,25 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!-- TODO: uncomment and set up the filter -->
 <!--  <filter>-->
 <!--    <filter-name>AccessFilter</filter-name>-->
 <!--    <filter-class>ua.nure.moskovchenko.web.filter.AccessFilter</filter-class>-->
 <!--    <init-param>-->
 <!--      <param-name>out-of-control</param-name>-->
-<!--      <param-value>logoutCommand loginCommand courseCommand languageCommand</param-value>-->
+<!--      <param-value></param-value>-->
 <!--    </init-param>-->
 <!--    <init-param>-->
 <!--      <param-name>common</param-name>-->
-<!--      <param-value>selectThemeCommand </param-value>-->
+<!--      <param-value></param-value>-->
 <!--    </init-param>-->
 <!--    <init-param>-->
 <!--      <param-name>student</param-name>-->
-<!--      <param-value>registerOnCourseCommand</param-value>-->
+<!--      <param-value></param-value>-->
 <!--    </init-param>-->
 <!--    <init-param>-->
 <!--      <param-name>lecturer</param-name>-->
-<!--      <param-value>selectStudentCommand</param-value>-->
+<!--      <param-value></param-value>-->
 <!--    </init-param>-->
 <!--    <init-param>-->
 <!--      <param-name>admin</param-name>-->
@@ -219,7 +230,7 @@
 =============================================================-->
 
   <session-config>
-    <session-timeout>1</session-timeout> <!-- It will expire in 1 minute -->
+    <session-timeout>10</session-timeout> <!-- It will expire in 10 minute -->
   </session-config>
 
 
@@ -227,9 +238,11 @@
               ERROR PAGE
   =============================================================-->
 
-<!--  <error-page>-->
-<!--    <exception-type>ua.nure.moskovchenko.exception.DBException</exception-type>-->
-<!--    <location>/jsp/errorPage.jsp</location>-->
-<!--  </error-page>-->
+  <error-page>
+    <exception-type>java.lang.Throwable</exception-type>
+    <location>/errorPage</location>
+  </error-page>
+
+
 
 </web-app>

@@ -5,6 +5,8 @@ public class Messages {
     private Messages() {}
 
     public static final String ERR_MESSAGE = "errorMessage";
+    public static final String ERR_MESSAGE_TEXT_MISSING =
+            "Looks like we got an unexpected trouble on our server. Please stand by!";
     public static final String ERR_INVALID_ROLE =
             "Uh-oh! Looks like there is an error in your identity. Please, re-login one more time!";
     public static final String ERR_DB_BASIC_TEXT =

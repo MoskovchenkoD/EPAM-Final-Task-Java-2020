@@ -30,6 +30,15 @@ public enum Topic {
         throw new IllegalArgumentException("No constant with text " + text + " found");
     }
 
+    public static boolean checkByName(String text) {
+        for (Topic r : Topic.values()) {
+            if (r.name.equalsIgnoreCase(text)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int getId() {
         return id;
     }

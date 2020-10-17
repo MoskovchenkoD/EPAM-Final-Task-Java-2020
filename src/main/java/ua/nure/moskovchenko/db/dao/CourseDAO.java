@@ -13,7 +13,7 @@ import java.util.List;
 
 import ua.nure.moskovchenko.exception.Messages;
 
-import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
+import static java.sql.Connection.*;
 
 public class CourseDAO {
 
@@ -289,9 +289,10 @@ public class CourseDAO {
             ps.setInt(1, statusId);
             ps.setInt(2, courseId);
 
-//            DatabaseMetaData db = connection.getMetaData();
-//            if (db.supportsTransactionIsolationLevel(TRANSACTION_SERIALIZABLE)) {
-//                connection.setTransactionIsolation(TRANSACTION_SERIALIZABLE);
+//            if (connection.getMetaData().supportsTransactionIsolationLevel(TRANSACTION_REPEATABLE_READ)) {
+//                connection.setTransactionIsolation(TRANSACTION_REPEATABLE_READ);
+//            } else {
+//                connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 //            }
 
             success = ps.executeUpdate();
@@ -316,4 +317,136 @@ public class CourseDAO {
 
         return success;
     }
+
+    public int updateCourseInfo(int id, String headline, String description, int length, int topicId, int userId, int statusId) {
+        Connection connection = null;
+        PreparedStatement psSelectCourse = null;
+        PreparedStatement psSelectLecturer = null;
+        PreparedStatement psUpdateCourse = null;
+        ResultSet rsSelectCourse = null;
+        ResultSet rsSelectLecturer = null;
+        int success = 0;
+
+        try {
+            connection = DBManager.getInstance().getConnection();
+            connection.setAutoCommit(false);
+
+            if (connection.getMetaData().supportsTransactionIsolationLevel(TRANSACTION_REPEATABLE_READ)) {
+                connection.setTransactionIsolation(TRANSACTION_REPEATABLE_READ);
+            } else {
+                connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            }
+
+            psSelectCourse = connection.prepareStatement(Query.SQL_SELECT_COURSE);
+            psSelectCourse.setInt(1, id);
+
+            psSelectLecturer = connection.prepareStatement(Query.SQL_SELECT_LECTURER_BY_ID);
+            psSelectLecturer.setInt(1, userId);
+            psSelectLecturer.setInt(2, Role.LECTURER.getId());
+
+            psUpdateCourse = connection.prepareStatement(Query.SQL_UPDATE_COURSE);
+            psUpdateCourse.setString(1, headline);
+            psUpdateCourse.setString(2, description);
+            psUpdateCourse.setInt(3, length);
+            psUpdateCourse.setInt(4, topicId);
+            psUpdateCourse.setInt(5, userId);
+            psUpdateCourse.setInt(6, statusId);
+            psUpdateCourse.setInt(7, id);
+
+            rsSelectCourse = psSelectCourse.executeQuery();
+            rsSelectLecturer = psSelectLecturer.executeQuery();
+
+            if (rsSelectCourse.next() && rsSelectLecturer.next()) {
+                LOG.info("Found the course and the lecturer");
+                success = psUpdateCourse.executeUpdate();
+            }
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            try {
+                connection.rollback();
+            } catch (SQLException sqlException) {
+                LOG.error(sqlException.getMessage());
+            }
+            throw new DBException(Messages.ERR_DB_BASIC_TEXT);
+        } finally {
+            DBManager.close(rsSelectCourse);
+            DBManager.close(rsSelectLecturer);
+            DBManager.close(psSelectCourse);
+            DBManager.close(psSelectLecturer);
+            DBManager.close(connection, psUpdateCourse);
+        }
+
+        if (success == 1) {
+            LOG.info("Course with id= " + id + " has been updated");
+        } else {
+            LOG.warn("Course with id= " + id + " has NOT been updated");
+        }
+
+        return success;
+    }
+
+    public int addNewCourse(String headline, String description, int length, int topicId, int userId, int statusId) {
+        Connection connection = null;
+        PreparedStatement psSelectLecturer = null;
+        PreparedStatement psInsertCourse = null;
+        ResultSet rsSelectLecturer = null;
+        int success = 0;
+
+        try {
+            connection = DBManager.getInstance().getConnection();
+            connection.setAutoCommit(false);
+
+            if (connection.getMetaData().supportsTransactionIsolationLevel(TRANSACTION_REPEATABLE_READ)) {
+                connection.setTransactionIsolation(TRANSACTION_REPEATABLE_READ);
+            } else {
+                connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            }
+
+            psSelectLecturer = connection.prepareStatement(Query.SQL_SELECT_LECTURER_BY_ID);
+            psSelectLecturer.setInt(1, userId);
+            psSelectLecturer.setInt(2, Role.LECTURER.getId());
+
+            psInsertCourse = connection.prepareStatement(Query.SQL_ADD_COURSE);
+            psInsertCourse.setString(1, headline);
+            psInsertCourse.setString(2, description);
+            psInsertCourse.setInt(3, length);
+            psInsertCourse.setInt(4, topicId);
+            psInsertCourse.setInt(5, userId);
+            psInsertCourse.setInt(6, statusId);
+
+            rsSelectLecturer = psSelectLecturer.executeQuery();
+            System.out.println("selectLecturer");
+
+            if (rsSelectLecturer.next()) {
+                success = psInsertCourse.executeUpdate();
+                System.out.println("insertCourse");
+            }
+            connection.commit();
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            try {
+                connection.rollback();
+            } catch (SQLException sqlException) {
+                LOG.error(sqlException.getMessage());
+            }
+            throw new DBException(Messages.ERR_DB_BASIC_TEXT);
+        } finally {
+            DBManager.close(rsSelectLecturer);
+            DBManager.close(psSelectLecturer);
+            DBManager.close(connection, psInsertCourse);
+        }
+
+        if (success == 1) {
+            LOG.info("A new course has been created");
+        } else {
+            LOG.info("A new course has NOT been created");
+        }
+
+        return success;
+    }
+
 }

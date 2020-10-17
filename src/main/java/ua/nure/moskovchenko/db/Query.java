@@ -3,24 +3,20 @@ package ua.nure.moskovchenko.db;
 public final class Query {
 
     //Registration process
-//    public static final String SQL_ADD_USER =
-//            "INSERT into user (firstName, lastName, patronymic, login, email, password) " +
-//            "values (?, ?, ?, ?, ?, ?)";
-
     public static final String SQL_ADD_USER =
             "INSERT into user (firstName, lastName, patronymic, login, email, password, role_id) " +
-                    "values (?, ?, ?, ?, ?, ?, ?)";
+            "values (?, ?, ?, ?, ?, ?, ?)";
 
     // TODO: JSP = courseDetails, Servlet = CourseDetailsServlet
     public static final String SQL_SELECT_USER_BY_LOGIN = "SELECT * FROM user WHERE login = ?";
 
-    // TODO: тетрадка 3 - таблица курсов для студента
+    // TODO: таблица курсов для студента
     public static final String SQL_SELECT_ALL_COURSES =
             "SELECT c.id, c.headline, t.topicName, u.lastName, c.length, COUNT(journal.course_id) AS students_amount, s.statusName " +
-                    "FROM user AS u, topic AS t, status AS s, course AS c " +
-                    "LEFT JOIN journal ON c.id = journal.course_id " +
-                    "WHERE c.topic_id = t.id AND c.user_id = u.id AND c.status_id = s.id AND s.statusName <> 'finished' " +
-                    "group by c.id";
+            "FROM user AS u, topic AS t, status AS s, course AS c " +
+            "LEFT JOIN journal ON c.id = journal.course_id " +
+            "WHERE c.topic_id = t.id AND c.user_id = u.id AND c.status_id = s.id AND s.statusName <> 'finished' " +
+            "group by c.id";
 
     public static final String SQL_SELECT_COURSES_FOR_STUDENT =
             "SELECT c.id, c.headline, t.topicName, u.lastName, c.length, COUNT(journal.course_id) AS students_amount, s.statusName " +
@@ -43,12 +39,6 @@ public final class Query {
             "SELECT course_id, user_id FROM journal WHERE course_id = ? AND user_id = ?";
     public static final String SQL_INSERT_STUDENT_INTO_JOURNAL =
             "INSERT INTO journal (course_id, user_id, dateJoin) VALUES (?, ?, curdate())";
-
-    //TODO: JSP = , Servlet = ...Servlet
-    public static final String SQL_SELECT_COURSE_JOURNAL =
-            "SELECT j.user_id, u.login, u.lastName, u.firstName, u.patronymic, j.dateJoin, j.userScore " +
-            "FROM journal AS j, user AS u " + //j.course_id = 2
-            "WHERE j.user_id = u.id AND j.course_id = ?";
 
     public static final String SQL_INSERT_MARK_INTO_JOURNAL =
             "UPDATE journal SET userScore = ? WHERE course_id = ? AND user_id = ?";
@@ -100,7 +90,8 @@ public final class Query {
             "(SELECT id FROM user WHERE login = 'p2'))";
 
     public static final String SQL_SELECT_LECTURER_FOR_COURSE =
-    "";
+            "SELECT u.id, u.firstName, u.lastName, u.patronymic, u.login, u.email " +
+            "FROM user AS u WHERE u.role_id = ?";
 
     //admin functionality - students (un-)blocking
     public static final String SQL_SELECT_ALL_STUDENTS =
@@ -117,11 +108,23 @@ public final class Query {
             "WHERE c.topic_id = t.id AND c.user_id = u.id AND c.status_id = s.id " +
             "group by c.id";
 
-    public static final String SQL_UPDATE_COURSE = "UPDATE course SET headline = 'Tn4', description = 'Td4', length = 3 WHERE id = 5;";
-
     public static final String SQL_SELECT_COURSE_DB =
             "SELECT c.id, c.headline, c.description, " +
             "c.length, c.topic_id, c.user_id, s.statusName " +
             "FROM course AS c, status AS s " +
             "WHERE c.status_id = s.id AND c.id = ?";
+
+    public static final String SQL_SELECT_LECTURER_BY_ID =
+            "SELECT * FROM user WHERE id = ? AND role_id = ?";
+
+    public static final String SQL_ADD_COURSE =
+            "INSERT INTO course (headline, description, length, topic_id, user_id, status_id) " +
+            "VALUES (?, ?, ?, ?, ?, ?)";
+
+    public static final String SQL_UPDATE_COURSE =
+            "UPDATE course " +
+            "SET headline = ?, description = ?, length = ?, topic_id = ?, user_id = ?, status_id = ? " +
+            "WHERE id = ?";
+
+    public static final String SQL_SELECT_COURSE = "SELECT * FROM course WHERE id = ?";
 }

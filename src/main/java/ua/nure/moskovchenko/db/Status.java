@@ -31,6 +31,15 @@ public enum Status {
         throw new IllegalArgumentException("No constant with text " + text + " found");
     }
 
+    public static boolean checkByName(String text) {
+        for (Status r : Status.values()) {
+            if (r.name.equalsIgnoreCase(text)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int getId() {
         return id;
     }

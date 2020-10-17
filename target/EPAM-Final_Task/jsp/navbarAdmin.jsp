@@ -13,8 +13,8 @@
                 <a class="nav-link btn-success" href="${browseStudents}"><loc:i18n value="admin.browseStudents"/></a>
             </li>
             <li class="nav-item active">
-                <c:url var="browseLecturers" value=""/> <!-- TODO: add servlet -->
-                <a class="nav-link" href="${browseLecturers}"><loc:i18n value="admin.browseLecturers"/></a>
+                <c:url var="browseLecturers" value="register"/> <!-- TODO: add servlet -->
+                <a class="nav-link" href="${browseLecturers}"><loc:i18n value="admin.registerLecturer"/></a>
             </li>
             <li class="nav-item">
                 <c:url var="browseCourses" value="operateCourse"/>

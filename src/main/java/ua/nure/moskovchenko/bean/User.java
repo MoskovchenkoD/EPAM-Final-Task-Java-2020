@@ -19,8 +19,6 @@ public class User {
     private Role role;
     private State state;
 
-    public User() {}
-
     public User(int id, String firstName, String lastName, String patronymic, String login, String email, int state) {
         this.id = id;
         this.firstName = firstName;
@@ -29,6 +27,16 @@ public class User {
         this.login = login;
         this.email = email;
         this.state = State.getById(state);
+    }
+
+    // Used for getting info about lecturers to help admin find the right one for the upcoming course
+    public User(int id, String firstName, String lastName, String patronymic, String login, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.login = login;
+        this.email = email;
     }
 
     public User(int id, String firstName, String lastName, String patronymic,

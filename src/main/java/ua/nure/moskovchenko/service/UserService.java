@@ -5,6 +5,7 @@ import ua.nure.moskovchenko.bean.UserLogin;
 import ua.nure.moskovchenko.db.Role;
 import ua.nure.moskovchenko.db.State;
 import ua.nure.moskovchenko.db.Status;
+import ua.nure.moskovchenko.db.Topic;
 import ua.nure.moskovchenko.db.dao.UserDAO;
 import org.apache.log4j.Logger;
 
@@ -74,5 +75,12 @@ public class UserService {
             return;
         }
     }
+
+    public List<User> getLecturersForCourse() {
+        List<User> list = userDAO.getLecturerForCourse();
+        return list;
+    }
+
+
 
 }

@@ -10,16 +10,7 @@ public final class WebPath {
     public static final String PAGE_REGISTRATION     = "/jsp/registration.jsp";
     public static final String PAGE_STUDENT_OPS      = "/jsp/studentOps.jsp";
     public static final String PAGE_OPERATE_COURSE   = "/jsp/operateCourse.jsp";
-
-
-    public static final String PAGE_FORGET           = "/WEB-INF/jsp/forget.jsp";
-    public static final String PAGE_STUDENT          = "/WEB-INF/jsp/student.jsp";
-    public static final String PAGE_ADMIN            = "/WEB-INF/jsp/admin.jsp";
-    public static final String PAGE_LECTURER         = "/WEB-INF/jsp/lecturer.jsp";
-
-    public static final String PAGE_EDIT_COURSE      = "/WEB-INF/jsp/editCourse.jsp";
-    public static final String PAGE_SEARCH           = "/WEB-INF/jsp/search.jsp";
-    public static final String PAGE_EDIT_INFORMATION = "/WEB-INF/jsp/editinformation.jsp";
+    public static final String PAGE_EDIT_COURSE      = "/jsp/editCourse.jsp";
 
     public static final String PAGE_ERROR_PAGE       = "/jsp/errorPage.jsp";
 
@@ -32,5 +23,6 @@ public final class WebPath {
     public static final String SERVLET_JOURNAL = "/journal";
     public static final String SERVLET_STUDENT = "/student";
     public static final String SERVLET_OPERATE_COURSE = "/operateCourse";
+    public static final String SERVLET_ERROR_PAGE = "/errorPage";
 
 }

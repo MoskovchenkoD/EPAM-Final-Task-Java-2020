@@ -28,7 +28,7 @@ public class DeleteCourseServlet extends HttpServlet {
             LOG.error("Failed to parse parameter");
         }
 
-        //will finish by monday
+
 
     }
 }

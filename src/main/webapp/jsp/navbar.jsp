@@ -38,17 +38,28 @@
             </li>
 
             <li class="nav-item dropdown active">
-                <a class="nav-link dropdown-toggle btn" href="" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <loc:i18n value="navbar.welcome"/>
-                    <c:out value="${user.login}"/>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown2">
-                    <c:url var="viewCabinet" value="cabinet"/>
-                    <a class="dropdown-item" href="${viewCabinet}"><loc:i18n value="navbar.goToCabinet"/></a>
-                    <div class="dropdown-divider"></div>
-                    <c:url var="logout" value="logout"/>
-                    <a class="dropdown-item" href="${logout}"><loc:i18n value="navbar.logout"/></a>
-                </div>
+                <c:choose>
+                    <c:when test="${sessionScope.user == null}">
+                        <li class="nav-item active">
+                            <c:url var="logIn" value="login"/>
+                            <a class="nav-link" href="${logIn}"><loc:i18n value="login.login"/></a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="nav-link dropdown-toggle btn" href="" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <loc:i18n value="navbar.welcome"/>
+                            <c:out value="${user.login}"/>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown2">
+                            <c:url var="viewCabinet" value="cabinet"/>
+                            <a class="dropdown-item" href="${viewCabinet}"><loc:i18n value="navbar.goToCabinet"/></a>
+                            <div class="dropdown-divider"></div>
+                            <c:url var="logout" value="logout"/>
+                            <a class="dropdown-item" href="${logout}"><loc:i18n value="navbar.logout"/></a>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
             </li>
         </ul>
     </div>

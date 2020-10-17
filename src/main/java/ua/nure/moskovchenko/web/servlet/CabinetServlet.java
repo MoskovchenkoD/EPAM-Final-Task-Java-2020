@@ -7,11 +7,8 @@ import ua.nure.moskovchenko.bean.CoursesForStud;
 import ua.nure.moskovchenko.bean.User;
 import ua.nure.moskovchenko.exception.Messages;
 import ua.nure.moskovchenko.service.CourseService;
-import ua.nure.moskovchenko.service.JournalService;
 import ua.nure.moskovchenko.service.StudentService;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +27,6 @@ public class CabinetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String destination = WebPath.PAGE_CABINET;
 
         List<CoursesForStud> studCoursesPlusScores = null;
         List<CoursesForLecturer> lecturerCourses = null;
@@ -55,17 +51,17 @@ public class CabinetServlet extends HttpServlet {
                     break;
                 }
                 default: {
-                    req.setAttribute(Messages.ERR_MESSAGE, Messages.ERR_INVALID_ROLE);
-                    destination = WebPath.PAGE_ERROR_PAGE;
+                    session.setAttribute(Messages.ERR_MESSAGE, Messages.ERR_INVALID_ROLE);
+                    resp.sendRedirect(WebPath.SERVLET_ERROR_PAGE);
                     break;
                 }
             }
+            getServletContext().getRequestDispatcher(WebPath.PAGE_CABINET).forward(req, resp);
 
         } else {
-            req.setAttribute(Messages.ERR_MESSAGE, Messages.ERR_ACCESS_DENIED_COMMON);
-            destination = WebPath.PAGE_ERROR_PAGE;
+            session.setAttribute(Messages.ERR_MESSAGE, Messages.ERR_ACCESS_DENIED_COMMON);
+            resp.sendRedirect(WebPath.SERVLET_ERROR_PAGE);
         }
-        getServletContext().getRequestDispatcher(destination).forward(req, resp);
 
     }
 }

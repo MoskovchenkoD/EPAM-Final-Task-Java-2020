@@ -55,6 +55,41 @@ public class UserDAO {
 
     }
 
+    public List<User> getLecturerForCourse() {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<User> list = new ArrayList<>();
+        User user;
+
+        try {
+            connection = DBManager.getInstance().getConnection();
+            ps = connection.prepareStatement(Query.SQL_SELECT_LECTURER_FOR_COURSE);
+            ps.setInt(1, Role.LECTURER.getId());
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                user = new User(
+                        rs.getInt(Column.ID_PRIMARY_KEY),
+                        rs.getString(Column.USER_LAST_NAME),
+                        rs.getString(Column.USER_FIRST_NAME),
+                        rs.getString(Column.USER_PATRONYMIC),
+                        rs.getString(Column.USER_LOGIN),
+                        rs.getString(Column.USER_EMAIL)
+                );
+                list.add(user);
+            }
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new DBException(Messages.ERR_DB_BASIC_TEXT);
+        } finally {
+            DBManager.close(connection, ps, rs);
+        }
+        LOG.debug(list.size() + " lecturers have been returned");
+        return list;
+    }
+
     public User getUserByLogin(String login) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -182,7 +217,6 @@ public class UserDAO {
         }
     }
 
-    //block user
-    //unblock user
+
 
 }

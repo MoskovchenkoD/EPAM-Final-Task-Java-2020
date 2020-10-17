@@ -21,6 +21,15 @@
 </head>
 <body>
 
+<c:choose>
+	<c:when test="${sessionScope.user.role == Role.ADMIN}">
+		<jsp:include page="navbarAdmin.jsp"/>
+	</c:when>
+	<c:otherwise>
+		<jsp:include page="navbar.jsp"/>
+	</c:otherwise>
+</c:choose>
+
 <div class="container">
 	
 	<div class="card">
