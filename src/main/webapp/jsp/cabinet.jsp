@@ -10,7 +10,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Cabinet</title>
 
-    <link rel="stylesheet" href="../../css/bootstrap.min.css"> <%-- equals main/webapp/css/bootstrap.min.css --%>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css"> <%-- http://java.sun.com/jsp/jstl/functions equals main/webapp/css/bootstrap.min.css --%>
     <link rel="stylesheet" href="../../css/style-courseDetail.css">
     <link rel="stylesheet" href="../../css/style-courses.css" >
     <link rel="stylesheet" href="../../css/simple-sidebar.css">

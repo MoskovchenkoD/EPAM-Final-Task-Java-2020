@@ -25,8 +25,8 @@ public class OperateCourseAddEditMethod {
     UserService userService = new UserService();
 
     void addEditCourse(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         HttpSession session = req.getSession();
+
         String destination = WebPath.SERVLET_ERROR_PAGE;
 
         String courseId = req.getParameter("courseId");

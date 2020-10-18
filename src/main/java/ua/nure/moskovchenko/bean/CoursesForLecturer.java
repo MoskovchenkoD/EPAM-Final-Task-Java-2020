@@ -4,6 +4,10 @@ import ua.nure.moskovchenko.db.Status;
 
 import java.io.Serializable;
 
+/**
+ * CoursesForLecturer class is used to transfer data which is related to the "course" table of the database,
+ * usually in combination with fields from other tables.
+ */
 public class CoursesForLecturer implements Serializable {
 
     private static final long serialVersionUID = -2506571128307476308L;

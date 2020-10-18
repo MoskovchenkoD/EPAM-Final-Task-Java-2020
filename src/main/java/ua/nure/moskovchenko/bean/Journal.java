@@ -3,6 +3,9 @@ package ua.nure.moskovchenko.bean;
 import java.io.Serializable;
 import java.sql.Date;
 
+/**
+ * Journal class is used to transfer data which is related to the "journal" table and fields from other tables.
+ */
 public class Journal implements Serializable {
 
     private static final long serialVersionUID = 7227916995336503043L;
@@ -16,6 +19,7 @@ public class Journal implements Serializable {
     private Date dateJoin;
     private int userScore;
 
+    // Used for getting info about students which gets transferred to the journal page.
     public Journal(int courseId, int userId, String lastName, String firstName, String patronymic, String login, Date dateJoin, int userScore) {
         this.courseId = courseId;
         this.userId = userId;
@@ -27,6 +31,7 @@ public class Journal implements Serializable {
         this.userScore = userScore;
     }
 
+    // Used to check if a specific student has joined a specific course
     public Journal(int courseId, int userId) {
         this.courseId = courseId;
         this.userId = userId;

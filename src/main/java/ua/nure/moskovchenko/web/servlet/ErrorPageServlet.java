@@ -17,15 +17,16 @@ public class ErrorPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         processError(req, resp);
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         processError(req, resp);
     }
 
     private void processError(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-
         HttpSession session = req.getSession();
 
         String error = (String) session.getAttribute(Messages.ERR_MESSAGE);

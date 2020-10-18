@@ -6,6 +6,10 @@ import ua.nure.moskovchenko.db.dao.JournalDAO;
 
 import java.util.List;
 
+/**
+ * JournalService class is responsible for transferring both the input data to DAO methods which specifies
+ * the information the programmer would like to get, and output data back to servlets.
+ */
 public class JournalService {
 
     private static final Logger LOG = Logger.getLogger(JournalService.class);
@@ -28,7 +32,10 @@ public class JournalService {
     }
 
     public int putMarkToStudentByCourseId(int studentId, int courseId, int mark) {
-        int success = journalDAO.putMarkToStudentByCourseId(studentId, courseId, mark);
+        int success = 0;
+        if (studentId > 0 && courseId > 0 && mark >= 1 && mark <= 10) {
+            success = journalDAO.putMarkToStudentByCourseId(studentId, courseId, mark);
+        }
         return success;
     }
 

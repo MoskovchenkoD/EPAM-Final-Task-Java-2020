@@ -34,8 +34,10 @@ public class CourseDetailsServlet extends HttpServlet {
             courseId = Integer.parseInt(req.getParameter("id"));
         } catch (NullPointerException e) {
             LOG.error("Error when parsing an attribute", e);
+            session.setAttribute(Messages.ERR_MESSAGE, Messages.ERR_NO_PAGE_PARAMETER);
+            resp.sendRedirect(destination);
+            return;
         }
-
 
         LOG.debug("Trying to load the course #" + courseId);
         Course course = courseService.getCourseDetails(courseId);
@@ -51,7 +53,9 @@ public class CourseDetailsServlet extends HttpServlet {
             }
             destination = WebPath.PAGE_COURSE_DETAILS;
         } else {
-            req.setAttribute(Messages.ERR_MESSAGE, "Course with id " + courseId + " hasn't been found");
+            session.setAttribute(Messages.ERR_MESSAGE, "Course with id " + courseId + " hasn't been found");
+            resp.sendRedirect(destination);
+            return;
         }
         getServletContext().getRequestDispatcher(destination).forward(req, resp);
 
@@ -60,20 +64,19 @@ public class CourseDetailsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        //String servletDestination = WebPath.PAGE_ERROR_PAGE;
 
         User user = (User) session.getAttribute("user");
         int courseIdToJoin = Integer.parseInt(req.getParameter("courseIdToJoin"));
         LOG.debug("Trying to apply the student ID= " + user.getId() + " for the course #" + courseIdToJoin);
 
-        int success = journalService.applyForCourse(courseIdToJoin, user.getId()); //fix to SELECT + INSERT transaction
+        int success = journalService.applyForCourse(courseIdToJoin, user.getId());
 
         if (success == 1) {
             //session.setAttribute("id", courseIdToJoin);
-            resp.sendRedirect(WebPath.SERVLET_COURSE_DETAILS + "?id=" + courseIdToJoin); // fix it
+            resp.sendRedirect(WebPath.SERVLET_COURSE_DETAILS + "?id=" + courseIdToJoin);
         } else {
-            req.setAttribute(Messages.ERR_MESSAGE, "Uh-oh! Looks like we got a error with signing you up for the course #" + courseIdToJoin);
-            //resp.sendRedirect(WebPath.PAGE_ERROR_PAGE); //fix it
+            session.setAttribute(Messages.ERR_MESSAGE, "Uh-oh! Looks like we got a error with signing you up for the course #" + courseIdToJoin);
+            resp.sendRedirect(WebPath.PAGE_ERROR_PAGE);
         }
 
     }

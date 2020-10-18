@@ -2,12 +2,14 @@ package ua.nure.moskovchenko.web.servlet;
 
 import org.apache.log4j.Logger;
 import ua.nure.moskovchenko.WebPath;
+import ua.nure.moskovchenko.exception.Messages;
 import ua.nure.moskovchenko.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -25,6 +27,7 @@ public class RegisterServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         req.getRequestDispatcher(WebPath.PAGE_REGISTRATION).forward(req, resp);
     }
 
@@ -35,6 +38,8 @@ public class RegisterServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+
         String destination = WebPath.SERVLET_LOGIN;
 
         String firstName = req.getParameter("firstName");
@@ -53,12 +58,18 @@ public class RegisterServlet extends HttpServlet {
         System.out.println("password = " + password);
         System.out.println("role = " + role);
 
-        if (role != null) {
-            destination = WebPath.SERVLET_CABINET; //fix later
+        if (!role.trim().isEmpty()) {
+            destination = WebPath.SERVLET_CABINET;
         }
 
-        userService.addNewUser(firstName, lastName, patronymic, login, email, password, role);
+        int success = userService.addNewUser(firstName, lastName, patronymic, login, email, password, role);
 
+        if (success == 1) {
+            session.setAttribute(Messages.ERR_MESSAGE, "Well done! User with the login '"
+                    + login + "' is now registered on our site!");
+        } else {
+            session.setAttribute(Messages.ERR_MESSAGE, "Uh-oh! Something went wrong and the registration failed.");
+        }
         resp.sendRedirect(destination);
     }
 }

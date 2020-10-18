@@ -1,5 +1,11 @@
 package ua.nure.moskovchenko.db;
 
+/**
+ * Column class consists of column names of database tables.
+ * These strings are used to retrieve values from ResultSets by column names.
+ * Some exotic columns, like COUNT(journal.course_id), are renamed in SQL queries to simpler ones.
+ * Then, their simple names are stored here.
+ */
 public final class Column {
 
     public static final String ID_PRIMARY_KEY = "id";
@@ -50,8 +56,5 @@ public final class Column {
     public static final String JOURNAL_DATE_JOIN = "dateJoin";
 
     //public static final String  = "";
-
-
-
 
 }

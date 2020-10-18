@@ -40,7 +40,7 @@ public final class Query {
     public static final String SQL_INSERT_STUDENT_INTO_JOURNAL =
             "INSERT INTO journal (course_id, user_id, dateJoin) VALUES (?, ?, curdate())";
 
-    public static final String SQL_INSERT_MARK_INTO_JOURNAL =
+    public static final String SQL_UPDATE_MARK_IN_JOURNAL =
             "UPDATE journal SET userScore = ? WHERE course_id = ? AND user_id = ?";
 
     //TODO: таблица курсов препода в личном кабинете
@@ -127,4 +127,6 @@ public final class Query {
             "WHERE id = ?";
 
     public static final String SQL_SELECT_COURSE = "SELECT * FROM course WHERE id = ?";
+
+    public static final String SQL_DELETE_COURSE_BY_ID = "DELETE FROM course WHERE id = ?";
 }

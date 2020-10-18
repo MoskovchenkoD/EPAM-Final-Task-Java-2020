@@ -15,7 +15,8 @@ public class Messages {
             "Unfortunately, this page isn't available for guests. Please, log in!";
     public static final String ERR_INVALID_DATA_TRANSFER =
             "Looks like we got an error while transfering data from client to server. Please, try the same action again!";
-
+    public static final String ERR_NO_PAGE_PARAMETER =
+            "Unfortunately, the page you requested can't be loaded.";
 
 
     //========== COMMON DATABASE ERRORS =============
@@ -31,7 +32,10 @@ public class Messages {
 
     public static final String ERR_INVALID_VALUE_LANGUAGE = "Cannot find such a language";
 
-    //=========== Non fatal messages =========
-    public static final String MARK_WAS_PUT_SUCCESSFULLY = "Mark was put successfully!";
+    //=========== Positive messages =========
 
+    public static final String MES_BEGINNING_COURSE = "The course with ID = ";
+
+    public static final String MES_ENDING_DELETED = " has been successfully deleted.";
+    public static final String MES_ENDING_NOT_FOUND = " has NOT been found.";
 }

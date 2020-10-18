@@ -1,19 +1,18 @@
 package ua.nure.moskovchenko.service;
 
-import com.sun.xml.internal.ws.addressing.WsaTubeHelper;
 import org.apache.log4j.Logger;
 import ua.nure.moskovchenko.bean.Course;
 import ua.nure.moskovchenko.bean.CoursesForLecturer;
 import ua.nure.moskovchenko.db.Status;
 import ua.nure.moskovchenko.db.Topic;
 import ua.nure.moskovchenko.db.dao.CourseDAO;
-import ua.nure.moskovchenko.exception.DBException;
-import ua.nure.moskovchenko.exception.Messages;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * CourseService class is responsible for transferring both the input data to DAO methods which specifies
+ * the information the programmer would like to get, and output data back to servlets.
+ */
 public class CourseService {
 
     private static final Logger LOG = Logger.getLogger(CourseService.class);
@@ -40,6 +39,11 @@ public class CourseService {
         return course;
     }
 
+    /**
+     * Tries to parse all the data to the appropriate variable types, validates it and transfers it either to
+     * updateCourseInfo method (courseId is present) or addNewCourse method (courseId is missing).
+     * @return  a String variable that indicates a possible issue (or empty) if an operation was successful
+     */
     public String checkAndUpdateCourseData(String courseId, String headline, String description, String length, String topic, String userId, String status) {
         String error = null;
         int success = 0;
@@ -77,7 +81,7 @@ public class CourseService {
 
         if (headline != null && !headline.trim().isEmpty() && headline.length() <= 60
                 && description != null && !description.trim().isEmpty() && description.length() <= 500
-                && lengthParsed > 0
+                && courseIdParsed > 0 && lengthParsed > 0 && userIdParsed > 0
                 && error == null) {
             if (courseId != null && !courseId.trim().isEmpty()) {
                 success = courseDAO.updateCourseInfo(courseIdParsed, headline, description, lengthParsed, topicIdParsed, userIdParsed, statusIdParsed);
@@ -120,6 +124,11 @@ public class CourseService {
         }
         int success = courseDAO.updateCourseStatus(courseId, statusId);
 
+        return success;
+    }
+
+    public int deleteCourseById(int courseId) {
+        int success = courseDAO.deleteCourseById(courseId);
         return success;
     }
 

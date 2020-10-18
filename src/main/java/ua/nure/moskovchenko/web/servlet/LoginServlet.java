@@ -1,6 +1,5 @@
 package ua.nure.moskovchenko.web.servlet;
 
-import ua.nure.moskovchenko.Constants;
 import ua.nure.moskovchenko.WebPath;
 import ua.nure.moskovchenko.bean.User;
 import ua.nure.moskovchenko.exception.Messages;
@@ -31,11 +30,6 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.debug("Login page has been requested");
 
-//        String fail = req.getParameter("fail");
-//
-//        if (fail != null) {
-//            req.setAttribute(Messages.ERR_MESSAGE, "abcd");
-//        }
         req.getRequestDispatcher(WebPath.PAGE_LOGIN).forward(req, resp);
     }
 
@@ -52,9 +46,9 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         HttpSession session = req.getSession();
         String servletDestination = WebPath.SERVLET_LOGIN;
+
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 

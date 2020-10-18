@@ -9,14 +9,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AddCourseServlet extends HttpServlet {
 
     private static final Logger LOG = Logger.getLogger(AddCourseServlet.class);
 
-    CourseService courseService = new CourseService();
-    UserService userService = new UserService();
     OperateCourseAddEditMethod ocaem = new OperateCourseAddEditMethod();
 
     @Override
@@ -28,6 +27,7 @@ public class AddCourseServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         ocaem.addEditCourse(req, resp);
 
     }

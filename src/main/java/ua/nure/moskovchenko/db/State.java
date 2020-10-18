@@ -1,12 +1,8 @@
 package ua.nure.moskovchenko.db;
 
-import ua.nure.moskovchenko.bean.User;
-
 /**
- * State
- * @author D. Moskovchenko
+ * Represents State table from the database. The enum consists of all user states.
  */
-
 public enum State {
     FREE(1, "free"),
     BLOCKED(2, "blocked");
@@ -19,6 +15,11 @@ public enum State {
         this.name = name;
     }
 
+    /**
+     * Searches through all the enum values to find the one that matches.
+     * @param id an int representation of a possible enum element
+     * @return a Role element that matches the id
+     */
     public static State getById(int id) {
         for (State e : State.values()) {
             if (e.id == id) {
@@ -28,6 +29,11 @@ public enum State {
         throw new IllegalArgumentException("No constant with id " + id + " found");
     }
 
+    /**
+     * Searches through all the enum values to find the one that matches.
+     * @param text a String representation of a possible enum element
+     * @return a Role element that matches the text string
+     */
     public static State getByName(String text) {
         for (State s : State.values()) {
             if (s.name.equalsIgnoreCase(text)) {

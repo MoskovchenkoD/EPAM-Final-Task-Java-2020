@@ -10,6 +10,9 @@ import ua.nure.moskovchenko.exception.DBException;
 import ua.nure.moskovchenko.exception.Messages;
 import org.apache.log4j.Logger;
 
+/**
+ * DBManager class is responsible for managing the stuff which is required to be able to work with the database.
+ */
 public class DBManager {
 
     private static final Logger LOG = Logger.getLogger(DBManager.class);
@@ -17,7 +20,11 @@ public class DBManager {
     private static DBManager instance;
     private DataSource ds;
 
-
+    /**
+     * Shares a singleton model object to save memory and performance.
+     * @return
+     * @throws DBException
+     */
     public static synchronized DBManager getInstance() throws DBException {
         if (instance == null) {
             instance = new DBManager();
@@ -25,12 +32,16 @@ public class DBManager {
         return instance;
     }
 
+    /**
+     * Gets invoked at the very first try to connect to the DB. Looks up for the resource name "jdbc/epam"
+     * in the webapp/META-INF/context.xml to get all the necessary parameters to work with DB.
+     * @throws DBException
+     */
     private DBManager() throws DBException {
         try {
             Context initContext = new InitialContext();
-            Context envContext = (Context) initContext.lookup("java:comp/env"); //java:/comp/env
+            Context envContext = (Context) initContext.lookup("java:comp/env");
 
-            //** Looks up for the resource name "jdbc/epam" in the context.xml to get the URL of the database */
             ds = (DataSource) envContext.lookup("jdbc/epam");
             LOG.trace("Data source has been accessed");
         } catch (NamingException ex) {
@@ -39,6 +50,9 @@ public class DBManager {
         }
     }
 
+    /**
+     * Shares a set connection which can be used by DAO classes to perform various operations with DB.
+     */
     public Connection getConnection() throws DBException {
         try {
             return ds.getConnection();
@@ -49,6 +63,9 @@ public class DBManager {
 
     }
 
+    /**
+     * Closes connection.
+     */
     private static void close(Connection con) {
         if (con != null) {
             try {
@@ -59,6 +76,9 @@ public class DBManager {
         }
     }
 
+    /**
+     * Closes prepared statement.
+     */
     public static void close(PreparedStatement stmt) {
         if (stmt != null) {
             try {
@@ -69,6 +89,9 @@ public class DBManager {
         }
     }
 
+    /**
+     * Closes ResultSet.
+     */
     public static void close(ResultSet rs) {
         if (rs != null) {
             try {
@@ -79,6 +102,9 @@ public class DBManager {
         }
     }
 
+    /**
+     * Closes resources.
+     */
     public static void close(Connection con, PreparedStatement stmt) {
         close(stmt);
         close(con);
@@ -96,8 +122,7 @@ public class DBManager {
     /**
      * Rollbacks a connection.
      *
-     * @param con
-     *            Connection to be rollbacked.
+     * @param con Connection to be rollbacked.
      */
     public static void rollback(Connection con) {
         if (con != null) {

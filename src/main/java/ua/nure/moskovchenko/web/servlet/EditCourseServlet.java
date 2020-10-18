@@ -5,7 +5,6 @@ import ua.nure.moskovchenko.WebPath;
 import ua.nure.moskovchenko.bean.Course;
 import ua.nure.moskovchenko.exception.DBException;
 import ua.nure.moskovchenko.service.CourseService;
-import ua.nure.moskovchenko.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,11 +18,11 @@ public class EditCourseServlet extends HttpServlet {
     private static final Logger LOG = Logger.getLogger(EditCourseServlet.class);
 
     CourseService courseService = new CourseService();
-    UserService userService = new UserService();
     OperateCourseAddEditMethod ocaem = new OperateCourseAddEditMethod();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         int courseId = 0;
 
         try {
@@ -51,6 +50,8 @@ public class EditCourseServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+
         ocaem.addEditCourse(req, resp);
 
     }

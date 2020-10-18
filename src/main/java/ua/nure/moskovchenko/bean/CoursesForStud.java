@@ -2,6 +2,10 @@ package ua.nure.moskovchenko.bean;
 
 import java.io.Serializable;
 
+/**
+ * CoursesForStud class is used to transfer data which is related to the "course" table of the database,
+ * usually in combination with fields from other tables.
+ */
 public class CoursesForStud implements Serializable {
 
     private static final long serialVersionUID = -3857973441030043286L;
@@ -14,6 +18,7 @@ public class CoursesForStud implements Serializable {
     private int studentCount;
     private String statusName;
     private int userScore;
+
 
     public CoursesForStud(int id, String headline, String topicName, String lastName, int length, int studentCount, String statusName) {
         this.id = id;

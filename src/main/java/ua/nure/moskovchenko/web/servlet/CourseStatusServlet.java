@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CourseStatusServlet extends HttpServlet {
@@ -19,14 +20,22 @@ public class CourseStatusServlet extends HttpServlet {
     CourseService courseService = new CourseService();
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+
+        resp.sendRedirect(WebPath.SERVLET_CABINET);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         int courseId = 0;
         Status courseStatus = Status.FINISHED;
 
         try {
             courseId = Integer.parseInt(req.getParameter("id"));
             courseStatus = Status.getByName(req.getParameter("status"));
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IllegalArgumentException e) {
             LOG.error(e.getMessage());
             req.setAttribute(Messages.ERR_MESSAGE, Messages.ERR_INVALID_DATA_TRANSFER);
         }

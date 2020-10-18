@@ -7,6 +7,10 @@ import ua.nure.moskovchenko.db.State;
 // 1. add salt filed
 // 2. rename "password" to "hashedPassword"
 
+/**
+ * User class is used to transfer data which is related to the "user" table of the database,
+ * usually in combination with fields from other tables.
+ */
 public class User {
 
     private int id;
@@ -19,6 +23,9 @@ public class User {
     private Role role;
     private State state;
 
+    /**
+     * Used for getting info about students which is transferred to the user access control page.
+     */
     public User(int id, String firstName, String lastName, String patronymic, String login, String email, int state) {
         this.id = id;
         this.firstName = firstName;
@@ -39,6 +46,10 @@ public class User {
         this.email = email;
     }
 
+    /**
+     * Used to get full information about the user. This object is stored in the session,
+     * so the system could recognize him and react on his requests in the right way.
+     */
     public User(int id, String firstName, String lastName, String patronymic,
                 String login, String email, String password, int role, int state) {
         this.id = id;

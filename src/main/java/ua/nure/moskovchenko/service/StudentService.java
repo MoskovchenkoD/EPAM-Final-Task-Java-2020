@@ -7,6 +7,10 @@ import ua.nure.moskovchenko.db.dao.CourseDAO;
 
 import java.util.List;
 
+/**
+ * StudentService class is responsible for transferring both the input data to DAO methods which specifies
+ * the information the programmer would like to get, and output data back to servlets.
+ */
 public class StudentService {
 
     private static final Logger LOG = Logger.getLogger(StudentService.class);

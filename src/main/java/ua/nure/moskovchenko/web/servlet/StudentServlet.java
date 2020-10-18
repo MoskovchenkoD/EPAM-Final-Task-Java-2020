@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,8 +26,14 @@ public class StudentServlet extends HttpServlet {
 
     UserService userService = new UserService();
 
+    /**
+     * Gets a list of User objects and transfers it to the webpage where they are shown in a table.
+     * Each User objects consists of the basic info about students which would help administration to
+     * analyze it and find the students which should get blocked or unblocked.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         List<User> students = userService.getAllStudents();
         req.setAttribute("students", students);
 
@@ -35,6 +42,7 @@ public class StudentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         int studentId = 0;
         State userState = State.FREE;
 

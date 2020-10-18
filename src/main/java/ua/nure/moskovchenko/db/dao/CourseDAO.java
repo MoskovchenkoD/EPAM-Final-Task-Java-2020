@@ -15,10 +15,22 @@ import ua.nure.moskovchenko.exception.Messages;
 
 import static java.sql.Connection.*;
 
+/**
+ * CourseDAO class contains various methods that connect to the database using DBManager singleton instance,
+ * declare SQL queries in prepared statements and perform CRUD operations related to the 'course' table.
+ * get- methods usually retrieve data and return objects or lists of objects back to the service layer.
+ * insert- and update- methods transfer data to the database, and delete- methods remove data from the database.
+ * Non-get methods return integer values to indicate if a specific operation was successful.
+ */
 public class CourseDAO {
 
     private static final Logger LOG = Logger.getLogger(CourseDAO.class);
 
+    /**
+     * Connects to the DB and retrieves a list of CoursesForStud objects using a prepared statement.
+     * Each CoursesForStud object contains enhanced info about the respective course.
+     * @return        a list of CoursesForStud that match the condition
+     */
     public List<CoursesForStud> getAllCourses() {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -54,6 +66,11 @@ public class CourseDAO {
         return list;
     }
 
+    /**
+     * Connects to the DB and retrieves a list of Course objects using a prepared statement.
+     * Each Course object contains enhanced info about the respective course
+     * @return        a list of Course that match the condition
+     */
     public List<Course> getCourses() {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -90,6 +107,12 @@ public class CourseDAO {
         return list;
     }
 
+    /**
+     * Connects to the DB and retrieves a list of CoursesForStud objects using a prepared statement.
+     * Each CoursesForStud object contains info about the courses which the student hasn't joined yet.
+     * @param userId  specifies which user the data should be related to
+     * @return        a list of CoursesForStud that match the condition
+     */
     public List<CoursesForStud> getCoursesForStudent(int userId) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -126,6 +149,13 @@ public class CourseDAO {
         return list;
     }
 
+    /**
+     * Connects to the DB and retrieves a list of CoursesForLecturer objects using a prepared statement.
+     * Each CoursesForLecturer object contains info about the course which should be helpful to operate
+     * the courses.
+     * @param userId  specifies which courses the lecturer is assigned on
+     * @return        a list of CoursesForLecturer that match the condition
+     */
     public List<CoursesForLecturer> getCoursesByLecturerId(int userId) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -161,6 +191,13 @@ public class CourseDAO {
         return list;
     }
 
+    /**
+     * Connects to the DB and retrieves a list of CoursesForStud objects using a prepared statement.
+     * Each CoursesForStud object contains info about the course and a journal mark which was put to
+     * a specific student.
+     * @param userId  specifies which user the data should be related to
+     * @return        a list of CoursesForStud that match the condition
+     */
     public List<CoursesForStud> getCoursesForStudentPlusScore(int userId) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -198,6 +235,12 @@ public class CourseDAO {
         return list;
     }
 
+    /**
+     * Connects to the DB and gets enhanced info about a specific course using a prepare statement which is specified
+     * by the input parameters.
+     * @param id  specifies which course should be looked for
+     * @return    an integer value that indicates if the operation was successful
+     */
     public Course getCourseById(int id) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -235,6 +278,12 @@ public class CourseDAO {
         return course;
     }
 
+    /**
+     * Connects to the DB and gets an existing 'course' row using a prepare statement which is specified
+     * by the input parameters.
+     * @param id  specifies which course should be looked for
+     * @return    an integer value that indicates if the operation was successful
+     */
     public Course getCourseForEdit(int id) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -270,7 +319,8 @@ public class CourseDAO {
     }
 
     /**
-     *
+     * Connects to the DB and makes a change to a specific 'journal' row using a prepare statement which is specified
+     * by the input parameters.
      * @param courseId  id of the course that indicates which one must be updated,
      *                  it gets placed in the placeholder 1
      * @param statusId  the course phase that must be placed in the placeholder 2
@@ -289,11 +339,11 @@ public class CourseDAO {
             ps.setInt(1, statusId);
             ps.setInt(2, courseId);
 
-//            if (connection.getMetaData().supportsTransactionIsolationLevel(TRANSACTION_REPEATABLE_READ)) {
-//                connection.setTransactionIsolation(TRANSACTION_REPEATABLE_READ);
-//            } else {
-//                connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-//            }
+            if (connection.getMetaData().supportsTransactionIsolationLevel(TRANSACTION_REPEATABLE_READ)) {
+                connection.setTransactionIsolation(TRANSACTION_REPEATABLE_READ);
+            } else {
+                connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            }
 
             success = ps.executeUpdate();
             connection.commit();
@@ -318,6 +368,16 @@ public class CourseDAO {
         return success;
     }
 
+    /**
+     * Connects to the DB and makes a change to a specific 'course' row using a prepare statement which is specified
+     * by the input parameters.
+     * Before the update operation, it insures that such a course, which should be updated, exists
+     * and the user, which should be assigned to this course, is a lecturer.
+     * @param topicId
+     * @param userId    should match the Primary key values in 'topic', 'user', 'status' tables respectively
+     * @param statusId
+     * @return          the integer value that indicates if the operation was successful
+     */
     public int updateCourseInfo(int id, String headline, String description, int length, int topicId, int userId, int statusId) {
         Connection connection = null;
         PreparedStatement psSelectCourse = null;
@@ -388,6 +448,15 @@ public class CourseDAO {
         return success;
     }
 
+    /**
+     * Connects to the DB and inserts a new 'course' row using a prepared statement which is specified
+     * by the input parameters.
+     * Before the update operation, it insures that the user, which should be assigned to this course, is a lecturer.
+     * @param topicId
+     * @param userId    should match the Primary key values in 'topic', 'user', 'status' tables respectively
+     * @param statusId
+     * @return          the integer value that indicates if the operation was successful
+     */
     public int addNewCourse(String headline, String description, int length, int topicId, int userId, int statusId) {
         Connection connection = null;
         PreparedStatement psSelectLecturer = null;
@@ -438,6 +507,50 @@ public class CourseDAO {
             DBManager.close(rsSelectLecturer);
             DBManager.close(psSelectLecturer);
             DBManager.close(connection, psInsertCourse);
+        }
+
+        if (success == 1) {
+            LOG.info("A new course has been created");
+        } else {
+            LOG.info("A new course has NOT been created");
+        }
+
+        return success;
+    }
+
+    /**
+     * Connects to the DB and deletes an existing 'course' row using a prepared statement which is specified
+     * by the input parameters. If the operation is successful, all dependant rows in 'journal' table get deleted too.
+     * @param courseId  specifies which course should be deleted
+     * @return          the integer value that indicates if the operation was successful
+     */
+    public int deleteCourseById(int courseId) {
+        Connection connection = null;
+        PreparedStatement psDeleteCourse = null;
+        int success = 0;
+
+        try {
+            connection = DBManager.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+
+            psDeleteCourse = connection.prepareStatement(Query.SQL_DELETE_COURSE_BY_ID);
+            psDeleteCourse.setInt(1, courseId);
+
+            success = psDeleteCourse.executeUpdate();
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            try {
+                connection.rollback();
+            } catch (SQLException sqlException) {
+                LOG.error(sqlException.getMessage());
+            }
+            throw new DBException(Messages.ERR_DB_BASIC_TEXT);
+        } finally {
+            DBManager.close(connection, psDeleteCourse);
         }
 
         if (success == 1) {

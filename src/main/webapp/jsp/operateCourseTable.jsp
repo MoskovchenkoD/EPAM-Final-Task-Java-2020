@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="loc" uri="/WEB-INF/taglib/i18n.tld"%>
-<%@ page import="ua.nure.moskovchenko.db.Status" %>
 
 <table id="dtBasicExample2" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
     <thead>
@@ -64,8 +63,6 @@
         <th class="th-sm"><loc:i18n value="course.topic"/>
         </th>
         <th class="th-sm"><loc:i18n value="user.lastName"/>
-        </th>
-        <th class="th-sm"><loc:i18n value="user.firstName"/>
         </th>
         <th class="th-sm"><loc:i18n value="course.length"/>
         </th>

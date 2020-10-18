@@ -5,6 +5,10 @@ import ua.nure.moskovchenko.db.Topic;
 
 import java.io.Serializable;
 
+/**
+ * Course class is used to transfer data which is related to the "course" table of the database, usually in combination
+ * with fields from other tables.
+ */
 public class Course implements Serializable {
 
     private static final long serialVersionUID = 208277669136664276L;

@@ -35,6 +35,7 @@ public class CoursesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
+
         User user = (User) session.getAttribute("user");
         List<CoursesForStud> coursesForUser = null;
 

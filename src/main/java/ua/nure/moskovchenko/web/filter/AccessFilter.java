@@ -1,8 +1,10 @@
 package ua.nure.moskovchenko.web.filter;
 
 import org.apache.log4j.Logger;
+import ua.nure.moskovchenko.bean.User;
 import ua.nure.moskovchenko.db.Role;
 import ua.nure.moskovchenko.WebPath;
+import ua.nure.moskovchenko.exception.Messages;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +16,8 @@ import java.util.*;
  * Security filter. Disabled by default. Uncomment Security filter
  * section in web.xml to enable.
  *
- * @author D. Moskovchenko
- *
  */
-public class AccessFilter implements Filter { //----------- TODO: set the filter --------------
+public class AccessFilter implements Filter {
 
     private static final Logger LOG = Logger.getLogger(AccessFilter.class);
 
@@ -31,53 +31,46 @@ public class AccessFilter implements Filter { //----------- TODO: set the filter
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        LOG.debug("Filter starts");
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+//        HttpSession session = httpRequest.getSession();
 
-        if (accessAllowed(request)) {
-            LOG.debug("Filter finished");
+        LOG.debug("Request URL: " + httpRequest.getRequestURL());
+
+        if (accessAllowed(request)) { //  //session
+            LOG.trace("Access granted"); //+ session.getAttribute("command")
             chain.doFilter(request, response);
         } else {
-            String errorMessage = "You do not have permission to access the requested resource";
+            LOG.trace("Access denied");
 
-            request.setAttribute("errorMessage", errorMessage);
-            LOG.trace("Set the request attribute: errorMessage --> " + errorMessage);
+            request.setAttribute(Messages.ERR_MESSAGE, "You do not have permission to access the requested resource");
 
             request.getRequestDispatcher(WebPath.PAGE_ERROR_PAGE)
                     .forward(request, response);
         }
     }
 
-    private boolean accessAllowed(ServletRequest request) {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
+    private boolean accessAllowed(ServletRequest request) { //HttpSession session //
+        HttpServletRequest httpRequest = (HttpServletRequest) request; //
+        HttpSession session = httpRequest.getSession(); //
 
-        String commandName = request.getParameter("command");
-        if (commandName == null || commandName.isEmpty()) {
-            return false;
-        }
+
+//        String commandName = request.getParameter("command");
+
+        String commandName = httpRequest.getRequestURL().toString();
+        LOG.trace("URL inside filter: " + commandName);
 
         if (outOfControl.contains(commandName)) {
             return true;
         }
 
-        HttpSession session = httpRequest.getSession(false);
         if (session == null) {
             return false;
         }
-        Role userRole;
-        String role = String.valueOf(session.getAttribute("role"));
-        switch (role){
-            case "admin":
-                userRole = Role.ADMIN;
-                break;
-            case "lecturer":
-                userRole = Role.LECTURER;
-                break;
-            case "student":
-                userRole = Role.STUDENT;
-                break;
-            default:
-                userRole = null;
-                break;
+
+        Role userRole = null;
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            userRole = user.getRole();
         }
 
         if (userRole == null) {

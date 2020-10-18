@@ -1,7 +1,6 @@
 package ua.nure.moskovchenko.db.dao;
 
 import org.apache.log4j.Logger;
-import ua.nure.moskovchenko.bean.CoursesForStud;
 import ua.nure.moskovchenko.bean.Journal;
 import ua.nure.moskovchenko.db.Column;
 import ua.nure.moskovchenko.db.DBManager;
@@ -13,10 +12,24 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * JournalDAO class contains various methods that connect to the database using DBManager singleton instance,
+ * declare SQL queries in prepared statements and perform CRUD operations related to the 'journal' table.
+ * get- methods usually retrieve data and return objects or lists of objects back to the service layer.
+ * insert- and update- methods transfer data to the database, and delete- methods remove data from the database.
+ * Non-get methods return integer values to indicate if a specific operation was successful.
+ */
 public class JournalDAO {
 
     private static final Logger LOG = Logger.getLogger(JournalDAO.class);
 
+    /**
+     * Connects to the DB and selects a new 'journal' row into the table to insure of the student
+     * has already joined a specific course.
+     * @param userId specifies which user should be looked for in the journal table
+     * @param courseId specifies the course which may contain a specific student
+     * @return an boolean value that indicates if the operation was successful
+     */
     public boolean checkStudentsParticipation(int courseId, int userId) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -54,6 +67,13 @@ public class JournalDAO {
 
     }
 
+    /**
+     * Connects to the DB and inserts a new 'journal' row into the table using a prepare statement which is specified
+     * by the input parameters.
+     * @param userId specifies which user should be entered into the journal table
+     * @param courseId specifies the course which the user wants to join
+     * @return an integer value that indicates if the operation was successful
+     */
     public int insertStudentIntoJournal(int courseId, int userId) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -85,6 +105,12 @@ public class JournalDAO {
         return result;
     }
 
+    /**
+     * Connects to the DB and retrieves a list of Journal objects using a prepare statement.
+     * Each Journal object contains info about students who have joined the course with the specified id.
+     * @param courseId specifies which course should be looked for
+     * @return a list of Journal objects that match the condition
+     */
     public List<Journal> getStudentsByCourseId(int courseId) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -122,6 +148,14 @@ public class JournalDAO {
         return list;
     }
 
+    /**
+     * Connects to the DB and makes a change to a specific 'journal' row using a prepare statement which is specified
+     * by the input parameters.
+     * @param userId specifies which journal row should be updated
+     * @param courseId specifies the course which the user has joined
+     * @param mark specifies which mark should be put
+     * @return an integer value that indicates if the operation was successful
+     */
     public int putMarkToStudentByCourseId(int userId, int courseId, int mark) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -130,7 +164,7 @@ public class JournalDAO {
         try {
             connection = DBManager.getInstance().getConnection();
             connection.setAutoCommit(false);
-            ps = connection.prepareStatement(Query.SQL_INSERT_MARK_INTO_JOURNAL);
+            ps = connection.prepareStatement(Query.SQL_UPDATE_MARK_IN_JOURNAL);
             ps.setInt(1, mark);
             ps.setInt(2, courseId);
             ps.setInt(3, userId);
