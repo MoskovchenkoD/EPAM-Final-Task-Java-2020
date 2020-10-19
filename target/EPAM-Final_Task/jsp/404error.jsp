@@ -10,10 +10,6 @@
 
 	<title>Error 404</title>
 
-	<!-- Google font -->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Titillium+Web:700,900" rel="stylesheet">
-
 </head>
 
 <body>
@@ -27,6 +23,9 @@
 			<p>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable</p>
 			<c:url value="courses" var="redirect"/>
 			<a href="${redirect}">Go To Homepage</a>
+
+			<br>
+
 		</div>
 	</div>
 

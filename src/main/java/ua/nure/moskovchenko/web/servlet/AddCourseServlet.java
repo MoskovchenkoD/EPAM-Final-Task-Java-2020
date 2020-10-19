@@ -2,16 +2,18 @@ package ua.nure.moskovchenko.web.servlet;
 
 import org.apache.log4j.Logger;
 import ua.nure.moskovchenko.WebPath;
-import ua.nure.moskovchenko.service.CourseService;
-import ua.nure.moskovchenko.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * AddCourseServlet is responsible for providing the page, related to a course adding/editing, and reading the data
+ * that comes from the client.
+ * It can be accessed only by an administrator.
+ */
 public class AddCourseServlet extends HttpServlet {
 
     private static final Logger LOG = Logger.getLogger(AddCourseServlet.class);

@@ -31,7 +31,7 @@ public class PasswordUtil {
         return Base64.getEncoder().encodeToString(saltBytes);
     }
 
-    public String hashAndSaltPassword(String pass) throws NoSuchAlgorithmException {
+    public static String hashAndSaltPassword(String pass) throws NoSuchAlgorithmException {
         String salt = getSalt();
         return hashPassword(pass + salt);
     }

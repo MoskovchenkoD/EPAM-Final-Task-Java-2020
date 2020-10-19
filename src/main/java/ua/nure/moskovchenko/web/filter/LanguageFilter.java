@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Tracks each request, gets user session, retrieves language attribute and tries to match its value with
+ * ones that represent available interface languages. If it doesn't match, it gets set to a default one, which is RU.
+ */
 public class LanguageFilter implements Filter {
 
     private static final Logger LOG = Logger.getLogger(LanguageFilter.class);

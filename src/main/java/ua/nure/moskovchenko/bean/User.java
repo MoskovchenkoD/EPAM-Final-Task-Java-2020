@@ -13,6 +13,9 @@ import ua.nure.moskovchenko.db.State;
  */
 public class User {
 
+    //select c.id AS course_id, u.id AS user_id, u.firstName, u.lastName, u.login, u.email, j.userScore, u.state_id
+    private int courseId;
+    private int userScore;
     private int id;
     private String firstName;
     private String lastName;
@@ -61,6 +64,33 @@ public class User {
         this.password = password;
         this.role = Role.getById(role);
         this.state = State.getById(state);
+    }
+
+    public User(int courseId, int id, String firstName, String lastName, String login, String email, int userScore, int state) {
+        this.courseId = courseId;
+        this.userScore = userScore;
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.login = login;
+        this.email = email;
+        this.state = State.getById(state);
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public int getUserScore() {
+        return userScore;
+    }
+
+    public void setUserScore(int userScore) {
+        this.userScore = userScore;
     }
 
     public String getPassword() {

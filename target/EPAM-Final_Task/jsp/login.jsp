@@ -43,11 +43,10 @@
                     <button type="submit" class="btn btn-secondary"><loc:i18n value="register.register"/></button>
                 </form>
             </div>
-            <c:choose>
-                <c:when test="${not empty errorMessage}">
-                    <i><loc:i18n value="login.fail"/></i>
-                </c:when>
-            </c:choose>
+            <c:if test="${not empty errorMessage}">
+                <i><loc:i18n value="login.fail"/></i><br>
+                <i><c:out value="${errorMessage}"/> </i>
+            </c:if>
         </div>
     </div>
 

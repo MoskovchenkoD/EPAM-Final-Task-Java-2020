@@ -6,6 +6,7 @@ import ua.nure.moskovchenko.db.State;
 import ua.nure.moskovchenko.db.dao.UserDAO;
 import org.apache.log4j.Logger;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -18,6 +19,16 @@ public class UserService {
     private static final Logger LOG = Logger.getLogger(UserService.class);
 
     UserDAO userDAO = new UserDAO();
+
+    public List<User> getAllStudentsAndCourses() {
+        List<User> list = userDAO.getAllStudentsAndCourses();
+        return list;
+    }
+
+    public User getUserById(int id) {
+        User user = userDAO.getUserById(id);
+        return user;
+    }
 
     /**
      * Invokes the appropriate DAO method, receives its result and transfers it back to the StudentServlet.
@@ -62,8 +73,20 @@ public class UserService {
      * to the one in the input and returns either the User object or null if the passwords mismatch.
      */
     public User checkUserRegistration(String login, String password) {
-        User user = userDAO.getUserByLogin(login);
+        User user = null;
+        if (!login.trim().isEmpty() && !password.trim().isEmpty()) {
+            user = userDAO.getUserByLogin(login);
+        }
         if (user != null && password.equals(user.getPassword())) { //TODO use getPasswordSalt and Hash
+            try {
+                String passHash = PasswordUtil.hashAndSaltPassword(password);
+                LOG.debug("hash-test: " + passHash);
+                LOG.debug("length = " + passHash.length());
+            } catch (NoSuchAlgorithmException e) {
+                LOG.debug("The password hashing algorithm can't be used");
+                return null;
+            }
+
             LOG.debug("The password of user '" + user.getLogin() + "' is correct");
             return user;
         } else if (user != null && !password.equals(user.getPassword())) { //TODO use getPasswordSalt and Hash
@@ -80,6 +103,7 @@ public class UserService {
      * the operation was successful.
      */
     public int addNewUser(String firstName, String lastName, String patronymic, String login, String email, String password, String role) {
+        LOG.trace("inside AddNewUser");
         int success = 0;
         int roleId;
 
@@ -99,6 +123,7 @@ public class UserService {
         } else {
             LOG.debug("Null fields");
         }
+        LOG.trace("AddNewUser in service. success =" + success);
         return success;
     }
 

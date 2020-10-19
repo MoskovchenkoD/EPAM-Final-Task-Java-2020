@@ -58,7 +58,7 @@ public class RegisterServlet extends HttpServlet {
         System.out.println("password = " + password);
         System.out.println("role = " + role);
 
-        if (!role.trim().isEmpty()) {
+        if (role != null && !role.trim().isEmpty()) {
             destination = WebPath.SERVLET_CABINET;
         }
 
@@ -67,8 +67,10 @@ public class RegisterServlet extends HttpServlet {
         if (success == 1) {
             session.setAttribute(Messages.ERR_MESSAGE, "Well done! User with the login '"
                     + login + "' is now registered on our site!");
+            LOG.debug("success = 1");
         } else {
             session.setAttribute(Messages.ERR_MESSAGE, "Uh-oh! Something went wrong and the registration failed.");
+            LOG.debug("success = 0");
         }
         resp.sendRedirect(destination);
     }

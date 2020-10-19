@@ -37,7 +37,6 @@ public class ErrorPageServlet extends HttpServlet {
         } else {
             req.setAttribute(Messages.ERR_MESSAGE, Messages.ERR_MESSAGE_TEXT_MISSING);
         }
-        getServletContext().getRequestDispatcher(WebPath.PAGE_ERROR_PAGE).forward(req, resp);
 
         // detailed error output
 
@@ -54,6 +53,6 @@ public class ErrorPageServlet extends HttpServlet {
 //        req.setAttribute("error", "Servlet " + servletName +
 //                " has thrown an exception " + throwable.getClass().getName() +
 //                " : " + throwable.getMessage());
-//        getServletContext().getRequestDispatcher(WebPath.PAGE_ERROR_PAGE).forward(req, resp);
+        getServletContext().getRequestDispatcher(WebPath.PAGE_ERROR_PAGE).forward(req, resp);
     }
 }

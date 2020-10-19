@@ -2,6 +2,12 @@ package ua.nure.moskovchenko.db;
 
 public final class Query {
 
+    public static final String SQL_SELECT_ALL_JOINED_STUDENTS =
+            "select c.id AS course_id, u.id AS user_id, u.firstName, u.lastName, u.login, u.email, j.userScore, u.state_id " +
+            "from course AS c, user AS u, journal AS j " +
+            "WHERE c.id = j.course_id AND u.id = j.user_id AND u.role_id = ?"; // = 2
+
+
     //Registration process
     public static final String SQL_ADD_USER =
             "INSERT into user (firstName, lastName, patronymic, login, email, password, role_id) " +
@@ -9,6 +15,8 @@ public final class Query {
 
     // TODO: JSP = courseDetails, Servlet = CourseDetailsServlet
     public static final String SQL_SELECT_USER_BY_LOGIN = "SELECT * FROM user WHERE login = ?";
+
+    public static final String SQL_SELECT_USER_BY_ID = "SELECT * FROM user WHERE id = ?";
 
     // TODO: таблица курсов для студента
     public static final String SQL_SELECT_ALL_COURSES =

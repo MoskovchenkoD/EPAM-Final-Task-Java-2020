@@ -151,6 +151,24 @@
     <url-pattern>/student</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>ViewAllStudentsServlet</servlet-name>
+    <servlet-class>ua.nure.moskovchenko.web.servlet.ViewAllStudentsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewAllStudentsServlet</servlet-name>
+    <url-pattern>/viewAllStudents</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>WatchStudentProfileServlet</servlet-name>
+    <servlet-class>ua.nure.moskovchenko.web.servlet.WatchStudentProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WatchStudentProfileServlet</servlet-name>
+    <url-pattern>/watchStudentProfile</url-pattern>
+  </servlet-mapping>
+
   <!--============================================
             Filters
   =============================================-->
@@ -178,6 +196,15 @@
   </filter-mapping>
 
   <filter>
+    <filter-name>StateFilter</filter-name>
+    <filter-class>ua.nure.moskovchenko.web.filter.StateFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>StateFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <filter>
     <filter-name>AccessFilter</filter-name>
     <filter-class>ua.nure.moskovchenko.web.filter.AccessFilter</filter-class>
     <init-param>
@@ -186,7 +213,7 @@
     </init-param>
     <init-param>
       <param-name>common</param-name>
-      <param-value>http://localhost:8080/cabinet</param-value>
+      <param-value>http://localhost:8080/cabinet http://localhost:8080/watchStudentProfile</param-value>
     </init-param>
     <init-param>
       <param-name>student</param-name>
@@ -198,7 +225,7 @@
     </init-param>
     <init-param>
       <param-name>admin</param-name>
-      <param-value>http://localhost:8080/addCourse http://localhost:8080/deleteCourse http://localhost:8080/editCourse http://localhost:8080/operateCourse http://localhost:8080/student</param-value>
+      <param-value>http://localhost:8080/viewAllStudents http://localhost:8080/addCourse http://localhost:8080/deleteCourse http://localhost:8080/editCourse http://localhost:8080/operateCourse http://localhost:8080/student</param-value>
     </init-param>
   </filter>
 
@@ -220,7 +247,7 @@
 =============================================================-->
 
   <session-config>
-    <session-timeout>10</session-timeout> <!-- It will expire in 10 minute -->
+    <session-timeout>40</session-timeout> <!-- It will expire in 10 minute -->
   </session-config>
 
 

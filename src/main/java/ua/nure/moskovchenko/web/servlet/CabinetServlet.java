@@ -17,6 +17,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * AddCourseServlet is responsible for providing the page, related to a personal cabinet which can be accessed
+ * by any authorized user.
+ */
 public class CabinetServlet extends HttpServlet {
 
     private static final Logger LOG = Logger.getLogger(CabinetServlet.class);

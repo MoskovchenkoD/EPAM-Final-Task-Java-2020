@@ -2,6 +2,9 @@ package ua.nure.moskovchenko;
 
 public final class WebPath {
 
+    public static final String PAGE_VIEW_STUDENTS    = "/jsp/viewStudents.jsp";
+    public static final String PAGE_VIEW_USER_PROFILE = "/jsp/viewUserProfile.jsp";
+
     public static final String PAGE_LOGIN            = "/jsp/login.jsp";
     public static final String PAGE_COURSES          = "/jsp/courses.jsp";
     public static final String PAGE_COURSE_DETAILS   = "/jsp/courseDetails.jsp";

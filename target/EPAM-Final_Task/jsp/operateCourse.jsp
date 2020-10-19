@@ -31,6 +31,10 @@
                 <br><h3 class="title mb-3 text-success"><loc:i18n value="cabinet.yourCourses"/></h3><br>
                 <c:url value="addCourse" var="goToAddCourse"/>
                 <a class="btn btn-success" href="${goToAddCourse}"><loc:i18n value="admin.createCourse"/> </a>
+
+                <c:url value="viewAllStudents" var="viewStudents"/>
+                <a class="btn btn-danger" href="${viewStudents}">View students</a>
+
                 <jsp:include page="operateCourseTable.jsp"/>
             </c:when>
             <c:otherwise>

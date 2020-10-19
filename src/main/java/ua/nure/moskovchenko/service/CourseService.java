@@ -3,6 +3,7 @@ package ua.nure.moskovchenko.service;
 import org.apache.log4j.Logger;
 import ua.nure.moskovchenko.bean.Course;
 import ua.nure.moskovchenko.bean.CoursesForLecturer;
+import ua.nure.moskovchenko.bean.User;
 import ua.nure.moskovchenko.db.Status;
 import ua.nure.moskovchenko.db.Topic;
 import ua.nure.moskovchenko.db.dao.CourseDAO;
@@ -45,7 +46,8 @@ public class CourseService {
      * @return  a String variable that indicates a possible issue (or empty) if an operation was successful
      */
     public String checkAndUpdateCourseData(String courseId, String headline, String description, String length, String topic, String userId, String status) {
-        String error = null;
+
+        String error = "";
         int success = 0;
 
         int courseIdParsed = 0;
@@ -81,9 +83,9 @@ public class CourseService {
 
         if (headline != null && !headline.trim().isEmpty() && headline.length() <= 60
                 && description != null && !description.trim().isEmpty() && description.length() <= 500
-                && courseIdParsed > 0 && lengthParsed > 0 && userIdParsed > 0
-                && error == null) {
-            if (courseId != null && !courseId.trim().isEmpty()) {
+                && lengthParsed > 0 && userIdParsed > 0 // && courseIdParsed > 0
+                && error.equals("")) {
+            if (courseIdParsed > 0) { // courseId != null && !courseId.trim().isEmpty()
                 success = courseDAO.updateCourseInfo(courseIdParsed, headline, description, lengthParsed, topicIdParsed, userIdParsed, statusIdParsed);
             } else {
                 success = courseDAO.addNewCourse(headline, description, lengthParsed, topicIdParsed, userIdParsed, statusIdParsed);
@@ -128,8 +130,8 @@ public class CourseService {
     }
 
     public int deleteCourseById(int courseId) {
-        int success = courseDAO.deleteCourseById(courseId);
-        return success;
+        //int success = courseDAO.deleteCourseById(courseId);
+        return courseDAO.deleteCourseById(courseId); //success;
     }
 
 }

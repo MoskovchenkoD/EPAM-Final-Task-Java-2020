@@ -40,7 +40,16 @@
         <td>${course.length}</td>
         <td>${course.studentCount}</td>
         <td>${course.statusName}</td>
-        <td>${course.userScore}</td>
+        <td>
+            <c:choose>
+                <c:when test="${course.userScore == 0}">
+                    ?
+                </c:when>
+                <c:otherwise>
+                    ${course.userScore}
+                </c:otherwise>
+            </c:choose>
+        </td>
         <td>
             <a href="${loadDetailsLink}"><loc:i18n value="course.seeDetails"/></a>
         </td>

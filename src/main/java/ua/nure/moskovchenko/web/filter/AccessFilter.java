@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Security filter. Disabled by default. Uncomment Security filter
+ * AccessFilter is responsible giving access to various page to a user, depending on his authorization and role.
  * section in web.xml to enable.
  *
  */
@@ -26,18 +26,21 @@ public class AccessFilter implements Filter {
     private List<String> commons = new ArrayList<>();
     private List<String> outOfControl = new ArrayList<>();
 
-    public void destroy() {
-        LOG.debug("Filter destruction");
-    }
-
+    /**
+     * Tracks requests from users and passes requested URLs to accessAllowed method.
+     * @param request
+     * @param response
+     * @param chain
+     * @throws IOException
+     * @throws ServletException
+     */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-//        HttpSession session = httpRequest.getSession();
 
         LOG.debug("Request URL: " + httpRequest.getRequestURL());
 
-        if (accessAllowed(request)) { //  //session
-            LOG.trace("Access granted"); //+ session.getAttribute("command")
+        if (accessAllowed(request)) {
+            LOG.trace("Access granted");
             chain.doFilter(request, response);
         } else {
             LOG.trace("Access denied");
@@ -49,14 +52,22 @@ public class AccessFilter implements Filter {
         }
     }
 
-    private boolean accessAllowed(ServletRequest request) { //HttpSession session //
-        HttpServletRequest httpRequest = (HttpServletRequest) request; //
-        HttpSession session = httpRequest.getSession(); //
-
-
-//        String commandName = request.getParameter("command");
+    /**
+     * Gets a requested URL from the request and tries to find it in access maps, each of which is related to
+     * a specific access level.
+     *
+     * @return   a boolean value that indicates if the user has access to a desired page
+     */
+    private boolean accessAllowed(ServletRequest request) {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpSession session = httpRequest.getSession();
 
         String commandName = httpRequest.getRequestURL().toString();
+        if(commandName.contains("js") || commandName.contains("css") || commandName.contains("ico")
+                || commandName.contains("jpg") || commandName.contains("png") || commandName.contains("font")) {
+            LOG.trace("URL inside filter: " + commandName);
+            return true;
+        }
         LOG.trace("URL inside filter: " + commandName);
 
         if (outOfControl.contains(commandName)) {
@@ -80,6 +91,12 @@ public class AccessFilter implements Filter {
         return accessMap.get(userRole).contains(commandName) || commons.contains(commandName);
     }
 
+    /**
+     * Retrieves AccessFilter initialization parameters from web.xml and places their values to different maps
+     * where the key is user's role (access level) and values are requestURLs that user sends to the server.
+     * @param fConfig
+     * @throws ServletException
+     */
     public void init(FilterConfig fConfig) throws ServletException {
         LOG.debug("Filter initialization starts");
 
@@ -115,6 +132,10 @@ public class AccessFilter implements Filter {
             list.add(st.nextToken());
         }
         return list;
+    }
+
+    public void destroy() {
+        LOG.debug("Filter destruction");
     }
 
 }

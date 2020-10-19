@@ -1,10 +1,7 @@
 package ua.nure.moskovchenko.db.dao;
 
 import ua.nure.moskovchenko.bean.User;
-import ua.nure.moskovchenko.db.Column;
-import ua.nure.moskovchenko.db.DBManager;
-import ua.nure.moskovchenko.db.Query;
-import ua.nure.moskovchenko.db.Role;
+import ua.nure.moskovchenko.db.*;
 import ua.nure.moskovchenko.exception.DBException;
 import org.apache.log4j.Logger;
 import ua.nure.moskovchenko.exception.Messages;
@@ -14,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.sql.Connection.TRANSACTION_REPEATABLE_READ;
+import static ua.nure.moskovchenko.db.Query.SQL_SELECT_USER_BY_ID;
 import static ua.nure.moskovchenko.db.Query.SQL_SELECT_USER_BY_LOGIN;
 
 /**
@@ -26,6 +24,81 @@ import static ua.nure.moskovchenko.db.Query.SQL_SELECT_USER_BY_LOGIN;
 public class UserDAO {
 
     private static final Logger LOG = Logger.getLogger(UserDAO.class);
+
+    public User getUserById(int id) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        User user = null;
+
+        try {
+            connection = DBManager.getInstance().getConnection();
+            ps = connection.prepareStatement(SQL_SELECT_USER_BY_ID);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                user = new User(
+                        rs.getInt(Column.ID_PRIMARY_KEY),
+                        rs.getString(Column.USER_FIRST_NAME),
+                        rs.getString(Column.USER_LAST_NAME),
+                        rs.getString(Column.USER_PATRONYMIC),
+                        rs.getString(Column.USER_LOGIN),
+                        rs.getString(Column.USER_EMAIL),
+                        rs.getString(Column.USER_PASSWORD),
+                        rs.getInt(Column.USER_ROLE_ID),
+                        rs.getInt(Column.USER_STATE_ID)
+                );
+            }
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new DBException(Messages.ERR_DB_BASIC_TEXT);
+        } finally {
+            DBManager.close(connection, ps, rs);
+        }
+        return user;
+    }
+
+    public List<User> getAllStudentsAndCourses() {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<User> list = new ArrayList<>();
+        User user;
+
+        try {
+            connection = DBManager.getInstance().getConnection();
+            ps = connection.prepareStatement(Query.SQL_SELECT_ALL_JOINED_STUDENTS);
+            ps.setInt(1, Role.STUDENT.getId());
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                //"select c.id AS course_id, u.id AS user_id, u.firstName, u.lastName, u.login, u.email, j.userScore, u.state_id "
+                user = new User(
+                        rs.getInt(Column.JOURNAL_COURSE_ID), //course_id
+                        rs.getInt(Column.COURSE_USER_ID), //user_id
+                        rs.getString(Column.USER_FIRST_NAME),
+                        rs.getString(Column.USER_LAST_NAME),
+                        rs.getString(Column.USER_LOGIN),
+                        rs.getString(Column.USER_EMAIL),
+                        rs.getInt(Column.JOURNAL_USER_SCORE),
+                        rs.getInt(Column.USER_STATE_ID)
+                );
+                list.add(user);
+            }
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new DBException(Messages.ERR_DB_BASIC_TEXT);
+        } finally {
+            DBManager.close(connection, ps, rs);
+        }
+        LOG.debug(list.size() + " joined students have been returned");
+        return list;
+
+    }
+
 
     /**
      * Connects to the DB and retrieves a list of User objects using a prepare statement.
@@ -203,6 +276,7 @@ public class UserDAO {
      * @return an integer value that indicates if the operation was successful
      */
     public int addNewUser(String firstName, String lastName, String patronymic, String login, String email, String password, int roleId) {
+        LOG.trace("UserDAO - addNewUser");
         Connection connection = null;
         PreparedStatement ps = null;
         PreparedStatement ps2 = null;

@@ -6,6 +6,7 @@ import ua.nure.moskovchenko.exception.Messages;
 
 import java.security.NoSuchAlgorithmException;
 
+//unused
 public class RegistrationValidator {
 
     private static final Logger LOG = Logger.getLogger(RegistrationValidator.class);

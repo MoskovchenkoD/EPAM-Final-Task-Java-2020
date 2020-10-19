@@ -2,6 +2,7 @@ package ua.nure.moskovchenko.web.servlet;
 
 import ua.nure.moskovchenko.WebPath;
 import ua.nure.moskovchenko.bean.User;
+import ua.nure.moskovchenko.db.State;
 import ua.nure.moskovchenko.exception.Messages;
 import ua.nure.moskovchenko.service.UserService;
 
@@ -34,6 +35,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     //TODO: method plan
+    // 0. Receive incoming login and password from the user
     // 1. Retrieve the User object -> consider that he is registered then
     // 1.1 Find user in DB by login
     // 1.2 Check his password
@@ -55,7 +57,7 @@ public class LoginServlet extends HttpServlet {
         LOG.debug("User '" + login + "' attempts to log in");
         User user = userService.checkUserRegistration(login, password);
 
-        if (user != null) {
+        if (user != null) { //&& user.getState() != State.BLOCKED
             LOG.debug("User '" + user.getLogin() + "', with role '" + user.getRole().getName() + "' has been found");
             session.setAttribute("user", user);
 
@@ -76,6 +78,7 @@ public class LoginServlet extends HttpServlet {
             }
         } else {
             req.setAttribute("login", login);
+            req.setAttribute(Messages.ERR_MESSAGE, "basic_error");
         }
         resp.sendRedirect(servletDestination);
 

@@ -1,5 +1,9 @@
 package ua.nure.moskovchenko.exception;
 
+/**
+ * Messages class contains all String messages which pop up on various pages when different errors occur,
+ * both client and server-side.
+ */
 public class Messages {
 
     private Messages() {}

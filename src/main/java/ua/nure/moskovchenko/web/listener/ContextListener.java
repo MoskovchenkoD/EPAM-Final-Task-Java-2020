@@ -7,7 +7,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-//@WebListener
+/**
+ * Gets a servlet context and initializes Log4J logger when the server gets launched.
+ */
 public class ContextListener implements ServletContextListener {
 
     private static final Logger LOG = Logger.getLogger(ContextListener.class);

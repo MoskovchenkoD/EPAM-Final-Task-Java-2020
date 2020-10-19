@@ -37,9 +37,18 @@ public class OperateCourseAddEditMethod {
         String userId = req.getParameter("userId");
         String status = req.getParameter("status");
 
+        System.out.println("courseId = " + courseId);
+        System.out.println("headline = " + headline);
+        System.out.println("description = " + description);
+        System.out.println("length = " + length);
+        System.out.println("topic = " + topic);
+        System.out.println("userId = " + userId);
+        System.out.println("status = " + status);
+
         String error = courseService.checkAndUpdateCourseData(courseId, headline, description, length, topic, userId, status);
 
-        if (error == null) {
+        if (error.equals("")) {
+            req.setAttribute(Messages.ERR_MESSAGE, "Course '" + headline + "' has been created");
             destination = WebPath.SERVLET_OPERATE_COURSE;
         } else {
             session.setAttribute(Messages.ERR_MESSAGE, error);
